@@ -1,0 +1,12 @@
+[
+{
+  "modid": "graphicnotify",
+  "name": "GraphicNotify",
+  "description": "Show notifications",
+  "version": "1.1",
+  "mcversion": "1.7.10",
+  "url": "",
+  "logoFile": "logo.png",
+  "authorList": ["Leoltron"]
+}
+]

@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import ru.leoltron.graphicnotify.client.gui.notification.Notification;
 
 import java.nio.charset.Charset;
 
+@SuppressWarnings("WeakerAccess")
 public class NotificationMessage implements IMessage {
 
     private String message;
@@ -22,6 +24,17 @@ public class NotificationMessage implements IMessage {
     private int displayTime;
     private boolean isTranslation;
 
+
+    /**
+     * # will be replaced with "Open url" key
+     * $ will be replaced with player nickname
+     * Use \ for screening
+     * @param message Text message
+     * @param iconItemStack ItemStack which will be used as icon (if not null)
+     * @param displayTime Display time in seconds
+     * @param url If not empty, players will be able to open link with pressing specified key
+     * @param isTranslation Will every word be tried to translate
+     */
     public NotificationMessage(String message, ItemStack iconItemStack,
                                int displayTime, String url, boolean isTranslation) {
         this.message = message;
@@ -121,6 +134,13 @@ public class NotificationMessage implements IMessage {
         return displayTime;
     }
 
+    public void sendToEveryone(){
+        PacketDispatcher.sendToAll(this);
+    }
+
+    public void sendTo(EntityPlayerMP playerMP) {
+        PacketDispatcher.sendTo(this, playerMP);
+    }
     /**
      * Writes string length and string itself into buffer
      */
